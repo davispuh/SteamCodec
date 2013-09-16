@@ -29,7 +29,7 @@ bundle
 Or install it yourself as:
 
 ```shell
-gem install SteamCodec
+gem install steam_codec
 ```
 
 ### Dependencies
