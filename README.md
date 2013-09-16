@@ -1,4 +1,5 @@
 # SteamCodec
+[![Gem Version](https://badge.fury.io/rb/steam_codec.png)](http://badge.fury.io/rb/steam_codec)
 
 SteamCodec is a library for working with different [Steam client](http://store.steampowered.com/about/) (and [Source engine](http://source.valvesoftware.com/)) file formats.
 
