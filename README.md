@@ -62,6 +62,7 @@ code coverage will also be generated
 [![Build Status](https://travis-ci.org/davispuh/SteamCodec.png?branch=master)](https://travis-ci.org/davispuh/SteamCodec)
 [![Dependency Status](https://gemnasium.com/davispuh/SteamCodec.png)](https://gemnasium.com/davispuh/SteamCodec)
 [![Coverage Status](https://coveralls.io/repos/davispuh/SteamCodec/badge.png)](https://coveralls.io/r/davispuh/SteamCodec)
+[![Code Climate](https://codeclimate.com/github/davispuh/SteamCodec.png)](https://codeclimate.com/github/davispuh/SteamCodec)
 
 ## Unlicense
 
