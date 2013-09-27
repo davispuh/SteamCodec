@@ -3,8 +3,8 @@ require 'spec_helper'
 
 describe SteamCodec::KeyValues do
 
-    let(:tokenKey) { 'TokenKey123' }
-    let(:tokenValue) { 'Token+Value4567' }
+    let(:tokenKey) { 'ToknKey123' }
+    let(:tokenValue) { 'Tokén+Value4567' }
     let(:tokenKeyQuoted) { "\"#{tokenKey}\"" }
     let(:tokenValueQuoted) { "\"#{tokenValue}\"" }
 
@@ -36,11 +36,16 @@ describe SteamCodec::KeyValues do
             "SomeArrayValue_1"  "4"
             "SomeArrayValue_2"  "3"
             "SomeArrayValue_3"  "2"
+            "UserConfig"
+             {
+                 "name"     "Brütal Legend"
+             }
         }
         EOS
     }
+
     let(:keyValueResult) {
-        { "appid" => "320", "Universe" => "1", "SomeArrayValue_1" => "4", "SomeArrayValue_2" => "3", "SomeArrayValue_3" => "2" }
+        { 'appid' => '320', 'Universe' => '1', 'SomeArrayValue_1' => '4', 'SomeArrayValue_2' => '3', 'SomeArrayValue_3' => '2', 'UserConfig' => {'name' => 'Brütal Legend'} }
     }
 
     describe SteamCodec::KeyValues::Parser do
@@ -198,13 +203,13 @@ describe SteamCodec::KeyValues do
 
         it 'should check if field exists' do
             keyValues.AppState.has_key?(:AppID).should be_true
-            keyValues.AppState.has_key?(:UserConfig).should be_false
+            keyValues.AppState.has_key?(:StateFlags).should be_false
             keyValues.respond_to?(:appstate).should be_true
             keyValues.respond_to?(:nope).should be_false
         end
 
         it 'should raise exception for non-existent field' do
-            expect { keyValues.AppState.UserConfig }.to raise_error(NoMethodError)
+            expect { keyValues.AppState.StateFlags }.to raise_error(NoMethodError)
         end
     end
 
