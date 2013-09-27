@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module SteamCodec
     class VDF < KeyValues
         # About VDF => http://wiki.teamfortress.com/wiki/WebAPI/VDF

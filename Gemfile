@@ -1,3 +1,4 @@
+# encoding: UTF-8
 source 'https://rubygems.org'
 
 group :development, :test do

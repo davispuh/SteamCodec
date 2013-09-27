@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module SteamCodec
     class ValueArray
         def initialize(valueHash = {})
