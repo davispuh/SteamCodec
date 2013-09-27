@@ -103,6 +103,31 @@ module SteamCodec
             self.loadFromJSON(json)
         end
 
+        def get(path = '')
+            fields = path.gsub(/^\/|\/$/, '').split('/')
+            current = self
+            fields.each do |name|
+                return nil if not current.key?(name)
+                current = current[name]
+            end
+            current
+        end
+
+        def asArray(name, seperator = '_')
+            data = []
+            counter = 0
+            cname = name+seperator+counter.to_s
+            data << self[cname] if key?(cname)
+            counter += 1
+            cname = name+seperator+counter.to_s
+            while key?(cname) do
+                data << self[cname]
+                counter += 1
+                cname = name+seperator+counter.to_s
+            end
+            data
+        end
+
         def method_missing(name, *args, &block) # :nodoc:
             return self[name] if args.empty? and block.nil? and key?(name)
             super

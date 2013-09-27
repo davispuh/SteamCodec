@@ -32,8 +32,14 @@ describe SteamCodec::KeyValues do
         {
             "appid"     "320"
             "Universe"  "1"
+            "SomeArrayValue_1"  "4"
+            "SomeArrayValue_2"  "3"
+            "SomeArrayValue_3"  "2"
         }
         EOS
+    }
+    let(:keyValueResult) {
+        { "appid" => "320", "Universe" => "1", "SomeArrayValue_1" => "4", "SomeArrayValue_2" => "3", "SomeArrayValue_3" => "2" }
     }
 
     describe SteamCodec::KeyValues::Parser do
@@ -143,7 +149,7 @@ describe SteamCodec::KeyValues do
 
         it 'should succesfully load from file' do
             StringIO.open(keyValueData) do |file|
-                SteamCodec::KeyValues::loadFromFile(file).should eq({ "AppState" => { "appid" => "320", "Universe" => "1" } })
+                SteamCodec::KeyValues::loadFromFile(file).should eq({ "AppState" => keyValueResult })
             end
         end
 
@@ -154,10 +160,35 @@ describe SteamCodec::KeyValues do
         end
     end
 
+    describe '#get' do
+        let(:keyValues) { SteamCodec::KeyValues::load(keyValueData) }
+
+        it 'should get field value' do
+            keyValues.get('AppState/AppID').should eq("320")
+        end
+
+        it 'should get field value even with slashes at start and end' do
+            keyValues.get('/AppState/AppID/').should eq("320")
+        end
+
+        it 'should be nil if field doesn\'t exist' do
+            keyValues.get('AppState/Something').should be_nil
+        end
+    end
+
+    describe '#asArray' do
+        let(:keyValues) { SteamCodec::KeyValues::load(keyValueData) }
+
+        it 'should load fields as array' do
+            keyValues.AppState.asArray('SomeArrayValue').should eq(['4','3','2'])
+        end
+    end
+
     describe 'access any field' do
         let(:keyValues) { SteamCodec::KeyValues::load(keyValueData) }
+
         it 'should be able to access AppState' do
-            keyValues.AppState.should eq({ "appid" => "320", "Universe" => "1" })
+            keyValues.AppState.should eq(keyValueResult)
         end
 
         it 'should be able to read AppID' do
