@@ -83,7 +83,7 @@ module SteamCodec
                 @UserConfig = userConfig
                 @Name = @UserConfig.name if @UserConfig.key?(:name)
                 @GameID = @UserConfig.gameid.to_i if @UserConfig.key?(:gameid)
-                @Installed = !@UserConfig.installdir.to_i.zero? if @UserConfig.key?(:installdir)
+                @Installed = !@UserConfig.installed.to_i.zero? if @UserConfig.key?(:installed)
                 @AppInstallDir = @UserConfig.appinstalldir if @UserConfig.key?(:appinstalldir)
                 @Language = @UserConfig.language if @UserConfig.key?(:language)
                 @BetaKey = @UserConfig.BetaKey if @UserConfig.key?(:BetaKey)
