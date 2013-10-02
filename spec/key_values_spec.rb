@@ -180,6 +180,10 @@ describe SteamCodec::KeyValues do
         it 'should be nil if field doesn\'t exist' do
             keyValues.get('AppState/Something').should be_nil
         end
+
+        it 'should work with dot as seperator' do
+            keyValues.get('AppState.UserConfig.name', '.').should eq("Brütal Legend")
+        end
     end
 
     describe '#asArray' do

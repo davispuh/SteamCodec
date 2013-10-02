@@ -104,8 +104,9 @@ module SteamCodec
             self.loadFromJSON(json)
         end
 
-        def get(path = '')
-            fields = path.gsub(/^\/|\/$/, '').split('/')
+        def get(path = '', seperator = '/')
+            escaped = Regexp.quote(seperator)
+            fields = path.gsub(/^#{escaped}|#{escaped}$/, '').split(seperator)
             current = self
             fields.each do |name|
                 return nil if not current.key?(name)
