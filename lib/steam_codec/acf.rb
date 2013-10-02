@@ -20,6 +20,17 @@ module SteamCodec
         attr_reader :SharedDepots
         attr_reader :CheckGuid
         attr_reader :InstallScripts
+        def self.scalarFields
+            return [:AppID, :Universe, :StateFlags, :InstallDir,
+                :LastUpdated, :UpdateResult, :SizeOnDisk,
+                :BuildID, :LastOwner, :BytesToDownload,
+                :BytesDownloaded, :FullValidateOnNextUpdate]
+        end
+
+        def self.extendedFields
+            return [:UserConfig, :MountedDepots, :SharedDepots, :CheckGuid, :InstallScripts]
+        end
+
         def self.loadFromFile(file)
             acf = KeyValues::loadFromFile(file)
             return self.new(acf.AppState) if acf and acf.key?(:AppState)
@@ -67,6 +78,37 @@ module SteamCodec
             @InstallScripts = InstallScripts.new(installScripts)
         end
 
+        def get(path = '', seperator = '.')
+            return nil unless @AppState
+            fields = path.split(seperator)
+            first = fields.shift
+            return to_hash unless first
+            self.class.scalarFields.each do |field|
+                if field.to_s.downcase == first.downcase
+                    return self.send(field)
+                end
+            end
+            self.class.extendedFields.each do |field|
+                if field.to_s.downcase == first.downcase
+                    return self.send(field).to_hash if fields.count == 0
+                    return self.send(field).get(fields.join(seperator), seperator)
+                end
+            end
+            @AppState.get(path, seperator)
+        end
+
+        def to_hash
+            result = {}
+            self.class.scalarFields.each do |field|
+                result[field.to_s] = self.send(field)
+            end
+            self.class.extendedFields.each do |field|
+                result[field.to_s] = self.send(field)
+                result[field.to_s] = result[field.to_s].to_hash if result[field.to_s]
+            end
+            result
+        end
+
         class UserConfig
             attr_accessor :Name
             attr_accessor :GameID
@@ -74,6 +116,10 @@ module SteamCodec
             attr_accessor :AppInstallDir
             attr_accessor :Language
             attr_accessor :BetaKey
+            def self.scalarFields
+                return [:Name, :GameID, :Installed, :AppInstallDir, :Language, :BetaKey]
+            end
+
             def initialize(userConfig = nil)
                 load(userConfig || KeyValues.new)
             end
@@ -88,6 +134,26 @@ module SteamCodec
                 @Language = @UserConfig.language if @UserConfig.key?(:language)
                 @BetaKey = @UserConfig.BetaKey if @UserConfig.key?(:BetaKey)
             end
+
+            def get(path = '', seperator = '.')
+                return nil unless @UserConfig
+                fields = path.split(seperator)
+                return to_hash unless fields.first
+                self.class.scalarFields.each do |field|
+                    if field.to_s.downcase == fields.first.downcase
+                        return self.send(field)
+                    end
+                end
+                @UserConfig.get(path, seperator)
+            end
+
+            def to_hash
+                result = {}
+                self.class.scalarFields.each do |field|
+                    result[field.to_s] = self.send(field)
+                end
+                result
+            end
         end
 
         class MountedDepots
@@ -101,6 +167,10 @@ module SteamCodec
                 mountedDepots.each do |depot, manifest|
                     @MountedDepots[depot.to_i] = manifest
                 end
+            end
+
+            def get(path = '', seperator = '.')
+                @MountedDepots[path.to_i]
             end
 
             def depots
@@ -132,6 +202,10 @@ module SteamCodec
             def remove(depot)
                 @MountedDepots.delete(depot)
             end
+
+            def to_hash
+                @MountedDepots
+            end
         end
 
         class SharedDepots
@@ -146,6 +220,10 @@ module SteamCodec
                 sharedDepots.each do |depot, baseDepot|
                     @SharedDepots[depot.to_i] = baseDepot.to_i
                 end
+            end
+
+            def get(path = '', seperator = '.')
+                @SharedDepots[path.to_i]
             end
 
             def depots
@@ -165,6 +243,10 @@ module SteamCodec
 
             def remove(depot)
                 @SharedDepots.delete(depot)
+            end
+
+            def to_hash
+                @SharedDepots
             end
         end
 

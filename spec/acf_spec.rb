@@ -50,6 +50,20 @@ describe SteamCodec::ACF do
         EOS
     }
 
+    describe '.scalarFields' do
+        it 'should return array of fields' do
+            SteamCodec::ACF::scalarFields.should be_an_instance_of Array
+            SteamCodec::ACF::scalarFields.first.should be_an_instance_of Symbol
+        end
+    end
+
+    describe '.extendedFields' do
+        it 'should return array of fields' do
+            SteamCodec::ACF::extendedFields.should be_an_instance_of Array
+            SteamCodec::ACF::extendedFields.first.should be_an_instance_of Symbol
+        end
+    end
+
     describe '.loadFromFile' do
         it 'should successfully load from file' do
             StringIO.open(appCacheFile) do |file|
@@ -72,18 +86,60 @@ describe SteamCodec::ACF do
 
     describe '#InstallDir' do
         it 'should return value' do
-            SteamCodec::ACF::load(appCacheFile).InstallDir.should eq("sacred_citadel")
+            SteamCodec::ACF::load(appCacheFile).InstallDir.should eq('sacred_citadel')
+        end
+    end
+
+    describe '#get' do
+        it 'should return value for scalar field' do
+            SteamCodec::ACF::load(appCacheFile).get('InstallDir').should eq('sacred_citadel')
+        end
+
+        it 'should return value for extended field' do
+            SteamCodec::ACF::load(appCacheFile).get('UserConfig.Name').should eq('Sacred Citadel')
+        end
+
+        it 'should return nil for unknown field' do
+            SteamCodec::ACF::load(appCacheFile).get('test').should be_nil
+        end
+    end
+
+    describe '#to_hash' do
+        it 'should return hash for all fields' do
+            SteamCodec::ACF::load(appCacheFile).to_hash.should be_an_instance_of Hash
         end
     end
 
     describe SteamCodec::ACF::UserConfig do
+
+        let(:config) { SteamCodec::ACF::UserConfig.new(SteamCodec::KeyValues[{"Name" => "Game"}]) }
+
+        describe '.scalarFields' do
+            it 'should return array of fields' do
+                SteamCodec::ACF::UserConfig::scalarFields.should be_an_instance_of Array
+                SteamCodec::ACF::UserConfig::scalarFields.first.should be_an_instance_of Symbol
+            end
+        end
+
         describe '.new' do
             it 'should initialize new instance with empty fields' do
                 SteamCodec::ACF::UserConfig.new.Name.should be_nil
             end
 
             it 'should initialize new instance with provided fields' do
-                SteamCodec::ACF::UserConfig.new(SteamCodec::KeyValues[{"Name" => "Game"}]).Name.should eq("Game")
+                config.Name.should eq("Game")
+            end
+        end
+
+        describe '#get' do
+            it 'should return nil for unknown field' do
+                config.get('test').should be_nil
+            end
+        end
+
+        describe '#to_hash' do
+            it 'should return hash for all fields' do
+                config.to_hash.should be_an_instance_of Hash
             end
         end
     end

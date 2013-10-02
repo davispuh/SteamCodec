@@ -39,6 +39,14 @@ module SteamCodec
             check
         end
 
+        def get(path = '', seperator = '.')
+            @ValueHash[path.to_i]
+        end
+
+        def to_hash
+            @ValueHash
+        end
+
         alias_method :all, :to_a
         alias_method :get, :[]
         alias_method :set, :[]=
