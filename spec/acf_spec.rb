@@ -23,7 +23,7 @@ describe SteamCodec::ACF do
                 "name"          "Sacred Citadel"
                 "gameid"        "207930"
                 "installed"     "1"
-                "appinstalldir" "C:\\Steam\\steamapps\\common\\sacred_citadel"
+                "appinstalldir" "C:\\\\Steam\\\\steamapps\\\\common\\\\sacred_citadel"
                 "language"      "english"
                 "BetaKey"       "public"
             }
@@ -38,13 +38,13 @@ describe SteamCodec::ACF do
             }
             "checkguid"
             {
-                "0"     "Bin\\some.exe"
-                "1"     "Bin\\another.exe"
+                "0"     "Bin\\\\some.exe"
+                "1"     "Bin\\\\another.exe"
             }
             "InstallScripts"
             {
-                "0"     "_CommonRedist\\vcredist\\2008\\installscript.vdf"
-                "1"     "_CommonRedist\\vcredist\\2010\\installscript.vdf"
+                "0"     "_CommonRedist\\\\vcredist\\\\2008\\\\installscript.vdf"
+                "1"     "_CommonRedist\\\\vcredist\\\\2010\\\\installscript.vdf"
             }
         }
         EOS

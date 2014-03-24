@@ -8,11 +8,11 @@ describe SteamCodec::VDF do
         {
             "Registry"
             {
-                "HKEY_LOCAL_MACHINE\\SOFTWARE\\Activision\\Singularity"
+                "HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Activision\\\\Singularity"
                 {
                     "string"
                     {
-                        "EXEString"     "%INSTALLDIR%\\Binaries\\Singularity.exe"
+                        "EXEString"     "%INSTALLDIR%\\\\Binaries\\\\Singularity.exe"
                         "InstallPath"       "%INSTALLDIR%"
                         "IntVersion"        "35.0"
                         "Version"       "1.0"
@@ -76,24 +76,24 @@ describe SteamCodec::VDF do
             {
                 "DirectX"
                 {
-                    "process 1"     "%INSTALLDIR%\\redist\\DirectX\\DXSETUP.exe"
+                    "process 1"     "%INSTALLDIR%\\\\redist\\\\DirectX\\\\DXSETUP.exe"
                     "command 1"     "/silent"
                     "Description"       "DirectX Installation"
                     "NoCleanUp"     "1"
                 }
                 "VC++"
                 {
-                    "process 1"     "%INSTALLDIR%\\redist\\vcredist_x86.exe"
+                    "process 1"     "%INSTALLDIR%\\\\redist\\\\vcredist_x86.exe"
                     "command 1"     "/q:a"
-                    "process 2"     "%INSTALLDIR%\\redist\\vcredist_x86_2005.exe"
+                    "process 2"     "%INSTALLDIR%\\\\redist\\\\vcredist_x86_2005.exe"
                     "command 2"     "/q:a"
                     "Description"       "VC++ Redist Installation"
                     "NoCleanUp"     "1"
                 }
                 "PhysX Version"
                 {
-                    "HasRunKey"     "HKEY_LOCAL_MACHINE\\SOFTWARE\\AGEIA Technologies"
-                    "process 1"     "%INSTALLDIR%\\redist\\PhysX_9.09.1112_SystemSoftware.exe"
+                    "HasRunKey"     "HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\AGEIA Technologies"
+                    "process 1"     "%INSTALLDIR%\\\\redist\\\\PhysX_9.09.1112_SystemSoftware.exe"
                     "command 1"     "/quiet"
                     "NoCleanUp"     "1"
                     "MinimumHasRunValue"        "9091112"
