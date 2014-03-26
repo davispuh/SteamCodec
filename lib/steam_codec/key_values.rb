@@ -9,14 +9,12 @@ module SteamCodec
     class KeyValues < InsensitiveHash
         class Parser
             def self.proccess(data, last = true)
-                token = /"[^"]*"/
+                token = '"[^"]*"'
                 data = data.gsub(/(?<=^|[\s{}])(\s*)([^"{}\s\n\r]+)(\s*)(?=[\s{}]|\z)/, '\1"\2"\3')
                 if last
-                    data.gsub!(/(#{token}:\s*#{token}|})(?=\s*")/, '\1,')
-                    data.gsub!(/(#{token})(?=\s*{|[ \t\f]+")/, '\1:')
+                    data = data.gsub(/(#{token}:\s*#{token}|})(?=\s*")/, '\1,').gsub(/(#{token})(?=\s*{|[ \t\f]+")/, '\1:')
                 else
-                    data.gsub!(/(#{token}:\s*#{token}|})(?=\s*"|\s*\z)/, '\1,')
-                    data.gsub!(/(#{token})(?=\s*{|[ \t\f]+"|\s*\z)/, '\1:')
+                    data = data.gsub(/(#{token}:\s*#{token}|})(?=\s*"|\s*\z)/, '\1,').gsub(/(#{token})(?=\s*{|[ \t\f]+"|\s*\z)/, '\1:')
                 end
                 data
             end
